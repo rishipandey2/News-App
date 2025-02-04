@@ -53,6 +53,11 @@ dependencies {
     // Architectural Components
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
+
+        implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+
+
+
     // Room
     implementation ("androidx.room:room-runtime:2.6.0")
     ksp ("androidx.room:room-compiler:2.6.0")
