@@ -14,13 +14,13 @@ import com.example.newsapp.models.Article
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
-    inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val articleImage: ImageView = itemView.findViewById(R.id.articleImage)
-        val articleSource: TextView = itemView.findViewById(R.id.articleSource)
-        val articleTitle: TextView = itemView.findViewById(R.id.articleTitle)
-        val articleDescription: TextView = itemView.findViewById(R.id.articleDescription)
-        val articleDateTime: TextView = itemView.findViewById(R.id.articleDateTime)
-    }
+    inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+        lateinit var articleImage: ImageView
+        lateinit var articleSource: TextView
+        lateinit var articleTitle: TextView
+        lateinit var articleDescription: TextView
+        lateinit var articleDateTime: TextView
+
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -35,8 +35,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
-        return ArticleViewHolder(view)
+       return ArticleViewHolder(
+           LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent,false)
+       )
     }
 
     override fun getItemCount(): Int {
@@ -47,21 +48,32 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
+        articleImage = holder.itemView.findViewById(R.id.articleImage)
+        articleSource =  holder.itemView.findViewById(R.id.articleSource)
+        articleTitle = holder.itemView.findViewById(R.id.articleTitle)
+        articleDescription = holder.itemView.findViewById(R.id.articleDescription)
+        articleDateTime = holder.itemView.findViewById(R.id.articleDateTime)
 
-        holder.apply {
-            Glide.with(itemView).load(article.urlToImage).into(articleImage)
-            articleSource.text = article.source?.name ?: "Unknown Source"
-            articleTitle.text = article.title ?: "No Title"
-            articleDescription.text = article.description ?: "No Description"
-            articleDateTime.text = article.publishedAt ?: "Unknown Date"
 
-            itemView.setOnClickListener {
-                onItemClickListener?.invoke(article)
+        holder.itemView.apply {
+            Glide.with(this).load(article.urlToImage).into(articleImage)
+            articleSource.text = article.source?.name
+            articleTitle.text = article.title
+            articleDescription.text = article.description
+            articleDateTime.text = article.publishedAt
+
+            setOnClickListener{
+                onItemClickListener?.let {
+                    it(article)
+                }
             }
+
         }
     }
 
-    fun setOnClickListener(listener: (Article) -> Unit) {
+    fun setOnItemClickListener(listener:(Article) -> Unit)
+    {
         onItemClickListener = listener
     }
+
 }

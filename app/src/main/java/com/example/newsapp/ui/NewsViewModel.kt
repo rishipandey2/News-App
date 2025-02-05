@@ -23,7 +23,7 @@ class NewsViewModel (app: Application, val newsRepository: NewsRepository): Andr
     var headlinesResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    var searchPage = 1
+    var searchNewsPage = 1
     var searchNewsResponse: NewsResponse? = null
     var newSearchQuery: String? = null
     var oldSearchQuery: String? = null
@@ -63,11 +63,11 @@ class NewsViewModel (app: Application, val newsRepository: NewsRepository): Andr
         if (response.isSuccessful) {
             response.body()?.let{resultResponse ->
                 if(searchNewsResponse == null || newSearchQuery != oldSearchQuery){
-                  searchPage = 1
+                  searchNewsPage = 1
                     oldSearchQuery = newSearchQuery
                     searchNewsResponse = resultResponse
                 }else{
-                    searchPage++
+                    searchNewsPage++
                     val oldArticles = headlinesResponse?.articles
                     val newArticles = resultResponse.articles
                     oldArticles?.addAll(newArticles)
@@ -131,7 +131,7 @@ class NewsViewModel (app: Application, val newsRepository: NewsRepository): Andr
 
         try{
             if(internetConnection(this.getApplication())){
-                val response = newsRepository.searchNews(searchQuery, searchPage)
+                val response = newsRepository.searchNews(searchQuery, searchNewsPage)
                 searchNews.postValue(handleSearchNewsResponse(response))
 
             }else{

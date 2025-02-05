@@ -57,6 +57,7 @@ dependencies {
         implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 
 
+    implementation ("androidx.core:core-ktx:1.10.1")// Use latest version
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.0")
