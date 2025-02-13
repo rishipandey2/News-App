@@ -30,8 +30,4 @@ Before you begin, it's recommended to revise the following topics:
 - Navigates between screens with ease using Navigation Components.
 - Handles background tasks such as data fetching using Coroutines.
 
-## Setup
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/your-username/news-app.git
